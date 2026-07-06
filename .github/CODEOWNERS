@@ -1,0 +1,39 @@
+# CODEOWNERS — Jobilo Platform
+# Each line is a file pattern followed by one or more owners.
+# Order matters: last matching pattern takes precedence.
+
+# Default owners for everything
+* @jobilo/core-team
+
+# Backend — API, services, data layer
+backend/* @jobilo/backend-team
+
+# Frontend — React app, components, styles
+frontend/* @jobilo/frontend-team
+
+# Database — Prisma schema, migrations, seeds
+prisma/* @jobilo/backend-team
+
+# Documentation — guides, API reference, governance
+docs/* @jobilo/docs-team
+
+# CI/CD — workflows, templates, automation
+.github/* @jobilo/devops-team
+
+# Configuration files — infrastructure and environment
+docker-compose.yml @jobilo/devops-team
+docker-compose.*.yml @jobilo/devops-team
+.env.example @jobilo/devops-team
+
+# Root-level files — project metadata and tooling
+README.md @jobilo/core-team
+CONTRIBUTING.md @jobilo/core-team
+CODE_OF_CONDUCT.md @jobilo/core-team
+SUPPORT.md @jobilo/core-team
+LICENSE.md @jobilo/core-team
+CHANGELOG.md @jobilo/core-team
+package.json @jobilo/core-team
+tsconfig.json @jobilo/core-team
+.eslintrc.* @jobilo/core-team
+.prettierrc @jobilo/core-team
+jest.config.* @jobilo/core-team

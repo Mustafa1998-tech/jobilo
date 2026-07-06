@@ -1,0 +1,108 @@
+import { AdminSubscriptionsService } from './subscriptions.service';
+export declare class AdminSubscriptionsController {
+    private readonly service;
+    constructor(service: AdminSubscriptionsService);
+    listPlans(): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        name: string;
+        description: string | null;
+        isActive: boolean;
+        sortOrder: number;
+        nameAr: string | null;
+        descriptionAr: string | null;
+        features: import("@prisma/client/runtime/client").JsonValue | null;
+    }[]>;
+    getPlan(id: string): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        name: string;
+        description: string | null;
+        isActive: boolean;
+        sortOrder: number;
+        nameAr: string | null;
+        descriptionAr: string | null;
+        features: import("@prisma/client/runtime/client").JsonValue | null;
+    }>;
+    createPlan(data: any): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        name: string;
+        description: string | null;
+        isActive: boolean;
+        sortOrder: number;
+        nameAr: string | null;
+        descriptionAr: string | null;
+        features: import("@prisma/client/runtime/client").JsonValue | null;
+    }>;
+    updatePlan(id: string, data: any): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        name: string;
+        description: string | null;
+        isActive: boolean;
+        sortOrder: number;
+        nameAr: string | null;
+        descriptionAr: string | null;
+        features: import("@prisma/client/runtime/client").JsonValue | null;
+    }>;
+    deletePlan(id: string): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        name: string;
+        description: string | null;
+        isActive: boolean;
+        sortOrder: number;
+        nameAr: string | null;
+        descriptionAr: string | null;
+        features: import("@prisma/client/runtime/client").JsonValue | null;
+    }>;
+    togglePlan(id: string): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        name: string;
+        description: string | null;
+        isActive: boolean;
+        sortOrder: number;
+        nameAr: string | null;
+        descriptionAr: string | null;
+        features: import("@prisma/client/runtime/client").JsonValue | null;
+    }>;
+    listSubscriptions(status?: string, page?: number, pageSize?: number): Promise<{
+        data: ({
+            user: {
+                id: string;
+                email: string;
+            };
+            plan: {
+                id: string;
+                name: string;
+            };
+        } & {
+            id: string;
+            status: string;
+            createdAt: Date;
+            updatedAt: Date;
+            userId: string;
+            planId: string;
+            currentPeriodStart: Date;
+            currentPeriodEnd: Date;
+            canceledAt: Date | null;
+            trialEndsAt: Date | null;
+        })[];
+        meta: {
+            page: number;
+            pageSize: number;
+            totalCount: number;
+            totalPages: number;
+            hasNextPage: boolean;
+            hasPreviousPage: boolean;
+        };
+    }>;
+}

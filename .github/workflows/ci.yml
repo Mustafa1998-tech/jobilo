@@ -1,0 +1,145 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: "20"
+  PNPM_VERSION: "9"
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  # ── Backend ────────────────────────────────────────────
+  backend:
+    name: Backend (Node ${{ matrix.node-version }})
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    strategy:
+      matrix:
+        node-version: [18, 20]
+      fail-fast: false
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "pnpm"
+          cache-dependency-path: backend/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+        working-directory: backend
+
+      - name: Lint
+        run: pnpm lint
+        working-directory: backend
+
+      - name: Typecheck
+        run: pnpm typecheck
+        working-directory: backend
+
+      - name: Test
+        run: pnpm test -- --ci --coverage
+        working-directory: backend
+
+      - name: Build
+        run: pnpm build
+        working-directory: backend
+
+      - name: Upload coverage report
+        if: ${{ matrix.node-version == env.NODE_VERSION }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-backend
+          path: backend/coverage/
+          retention-days: 14
+
+  # ── Frontend ───────────────────────────────────────────
+  frontend:
+    name: Frontend (Node ${{ matrix.node-version }})
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    strategy:
+      matrix:
+        node-version: [18, 20]
+      fail-fast: false
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "pnpm"
+          cache-dependency-path: frontend/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+        working-directory: frontend
+
+      - name: Lint
+        run: pnpm lint
+        working-directory: frontend
+
+      - name: Typecheck
+        run: pnpm typecheck
+        working-directory: frontend
+
+      - name: Test
+        run: pnpm test -- --ci --coverage
+        working-directory: frontend
+
+      - name: Build
+        run: pnpm build
+        working-directory: frontend
+
+      - name: Upload coverage report
+        if: ${{ matrix.node-version == env.NODE_VERSION }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-frontend
+          path: frontend/coverage/
+          retention-days: 14
+
+  # ── Summary ────────────────────────────────────────────
+  summary:
+    name: CI Summary
+    if: always()
+    runs-on: ubuntu-22.04
+    needs: [backend, frontend]
+    steps:
+      - name: Check results
+        run: |
+          echo "Backend: ${{ needs.backend.result }}"
+          echo "Frontend: ${{ needs.frontend.result }}"
+          if [ "${{ needs.backend.result }}" = "failure" ] || [ "${{ needs.frontend.result }}" = "failure" ]; then
+            echo "CI failed!"
+            exit 1
+          fi
+          echo "CI passed!"

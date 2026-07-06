@@ -1,0 +1,83 @@
+# Dependabot configuration — Jobilo Platform
+# See: https://docs.github.com/en/code-security/dependabot
+
+version: 2
+updates:
+
+  # Backend npm dependencies
+  - package-ecosystem: "npm"
+    directory: "/backend"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/New_York"
+    assignees:
+      - "jobilo/backend-team"
+    labels:
+      - "dependencies"
+      - "backend"
+    reviewers:
+      - "jobilo/backend-team"
+    open-pull-requests-limit: 10
+    versioning-strategy: increase
+    commit-message:
+      prefix: "chore(deps)"
+      prefix-development: "chore(deps-dev)"
+
+  # Frontend npm dependencies
+  - package-ecosystem: "npm"
+    directory: "/frontend"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/New_York"
+    assignees:
+      - "jobilo/frontend-team"
+    labels:
+      - "dependencies"
+      - "frontend"
+    reviewers:
+      - "jobilo/frontend-team"
+    open-pull-requests-limit: 10
+    versioning-strategy: increase
+    commit-message:
+      prefix: "chore(deps)"
+      prefix-development: "chore(deps-dev)"
+
+  # Docker dependencies
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/New_York"
+    assignees:
+      - "jobilo/devops-team"
+    labels:
+      - "dependencies"
+      - "docker"
+    reviewers:
+      - "jobilo/devops-team"
+    open-pull-requests-limit: 5
+
+  # GitHub Actions dependencies
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/New_York"
+    assignees:
+      - "jobilo/devops-team"
+    labels:
+      - "dependencies"
+      - "ci"
+    reviewers:
+      - "jobilo/devops-team"
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: "chore(ci)"
