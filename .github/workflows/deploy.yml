@@ -45,7 +45,7 @@ jobs:
             type=sha,prefix=,suffix=,format=short
 
       - name: Build and push backend
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: ./backend
           push: true
@@ -55,7 +55,7 @@ jobs:
           cache-to: type=gha,mode=max
 
       - name: Build and push frontend
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: ./frontend
           push: true
